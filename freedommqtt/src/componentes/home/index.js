@@ -30,6 +30,19 @@ export default function Home() {
     fontSize: '20px'
   }
 
+  const buttonOn ={
+    width: '60px',
+    marginLeft: '5px',
+    background: 'green',
+    color: '#eee'
+  }
+
+  const buttonOff ={
+    width: '60px',
+    marginLeft: '5px',
+    background: 'red',
+    color: '#eee'
+  }
 
 
   const [get, setGet] = useState([true])
@@ -38,22 +51,22 @@ export default function Home() {
   const [newReles, setNewReles] = useState([])
 
   const [reles, setReles] = useState([
-    { nome: 'Status', estado: list[0] },
-    { nome: 'Pressostato 01', estado: list[1] },
-    { nome: 'Pressostato 02', estado: list[2] },
-    { nome: 'Cisterta BS', estado: list[3] },
-    { nome: 'Cisterta BI', estado: list[4] },
+    { nome: 'Estado', estado: list[0] },
+    { nome: 'Pressos 01', estado: list[1] },
+    { nome: 'Pressos 02', estado: list[2] },
+    { nome: 'Cisterna BS', estado: list[3] },
+    { nome: 'Cisterna BI', estado: list[4] },
     { nome: 'Motor 01', estado: list[5] },
     { nome: 'Motor 02', estado: list[6] },
     { nome: 'Motor 03', estado: list[7] },
     { nome: 'Motor 04', estado: list[8] },
     { nome: 'FFaseState', estado: list[9] },
     { nome: 'MotorDaVez', estado: list[10] },
-    { nome: 'MotorExtra', estado: list[11] },
-    { nome: 'Atuador 01', estado: list[12] },
-    { nome: 'Atuador 02', estado: list[13] },
-    { nome: 'Atuador 03', estado: list[14] },
-    { nome: 'Atuador 04', estado: list[15] },
+    { nome: 'Entrada Auxiliar', estado: list[11] },
+    { nome: 'Atuador 01', estado: list[12] || '0' },
+    { nome: 'Atuador 02', estado: list[13] || '0'},
+    { nome: 'Atuador 03', estado: list[14] || '0'},
+    { nome: 'Atuador 04', estado: list[15] || '0'},
   ])
 
   getList(get)
@@ -81,7 +94,7 @@ export default function Home() {
       const index = reles.indexOf(r)
       var newReles = reles
 
-      newReles[index].estado = (Number(r.estado) === 1 ? false : true)
+      newReles[index].estado = (Number(r.estado) === 1 ? '0' : '1')
       setNewReles({ newReles })
 
       console.log('valor antigo', r.estado)
@@ -104,8 +117,14 @@ export default function Home() {
       <h1 style={titleText}>{title}</h1>
       {reles.map(r => (
         <>
-          <div key={r.nome}>
-            <span>{r.nome}</span>
+        <div key={r.nome}>
+            <span >{r.nome}</span>
+            {(r.nome === 'Atuador 01' || r.nome === 'Atuador 02' || r.nome === 'Atuador 03' || r.nome === 'Atuador 04') ? (
+            <button style={ r.estado === '0' ? buttonOn : buttonOff }type="button"
+            onClick={() => mudaEstado(r)}
+            >{r.estado === '1' ? 'Desligar' : 'Ligar'}</button>
+            ) : <></>}
+            
             <input type="checkbox"
               checked={(Number(r.estado) === 1 ? true : false)}
               onClick={() => mudaEstado(r)}
