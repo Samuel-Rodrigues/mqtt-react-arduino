@@ -1,12 +1,12 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Mqtt from './mqtt/index'
+import Mqtt from '../src/componentes/mqtt'
+import Home from '../src/componentes/home'
 
 function App() {
   return (
     <div className="App">
-      <Mqtt />
+      <Home />
     </div>
   );
 }
