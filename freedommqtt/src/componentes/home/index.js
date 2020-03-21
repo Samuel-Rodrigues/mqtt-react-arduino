@@ -30,23 +30,32 @@ export default function Home() {
     fontSize: '20px'
   }
 
-  const buttonOn ={
+  const buttonOn = {
     width: '60px',
     marginLeft: '5px',
     background: 'green',
     color: '#eee'
   }
 
-  const buttonOff ={
+  const buttonOff = {
     width: '60px',
     marginLeft: '5px',
     background: 'red',
     color: '#eee'
   }
 
+  const logCss = {
+    fontSize: '12px',
+    margin: '0px',
+    fontWeight: 'none',
+    display: 'block'
+  }
+
+
 
   const [get, setGet] = useState([true])
   const [list, setList] = useState([])
+  const [log, setLog] = useState('')
   const [title, setTitle] = useState('Sistema de Monitoramento')
   const [newReles, setNewReles] = useState([])
 
@@ -64,9 +73,9 @@ export default function Home() {
     { nome: 'MotorDaVez', estado: list[10] },
     { nome: 'Entrada Auxiliar', estado: list[11] },
     { nome: 'Atuador 01', estado: list[12] || '0' },
-    { nome: 'Atuador 02', estado: list[13] || '0'},
-    { nome: 'Atuador 03', estado: list[14] || '0'},
-    { nome: 'Atuador 04', estado: list[15] || '0'},
+    { nome: 'Atuador 02', estado: list[13] || '0' },
+    { nome: 'Atuador 03', estado: list[14] || '0' },
+    { nome: 'Atuador 04', estado: list[15] || '0' },
   ])
 
   getList(get)
@@ -115,16 +124,17 @@ export default function Home() {
       </span>
 
       <h1 style={titleText}>{title}</h1>
+      
       {reles.map(r => (
         <>
-        <div key={r.nome}>
+          <div key={r.nome}>
             <span >{r.nome}</span>
             {(r.nome === 'Atuador 01' || r.nome === 'Atuador 02' || r.nome === 'Atuador 03' || r.nome === 'Atuador 04') ? (
-            <button style={ r.estado === '0' ? buttonOn : buttonOff }type="button"
-            onClick={() => mudaEstado(r)}
-            >{r.estado === '1' ? 'Desligar' : 'Ligar'}</button>
+              <button style={r.estado === '0' ? buttonOn : buttonOff} type="button"
+                onClick={() => mudaEstado(r)}
+              >{r.estado === '1' ? 'Desligar' : 'Ligar'}</button>
             ) : <></>}
-            
+
             <input type="checkbox"
               checked={(Number(r.estado) === 1 ? true : false)}
               onClick={() => mudaEstado(r)}
@@ -135,6 +145,7 @@ export default function Home() {
       <div>
 
         <button style={button} onClick={() => { getList(true); setGet(true) }}>Atualizar</button>
+        <span style={logCss}>Log: <span >{log}</span></span>
       </div>
       <span >
         <img style={divStyle2} src="https://github.com/carloslcor/documentos_auxiliares/blob/master/Clientes/Logomarcas/Mega%20Geradores.jpg?raw=true" />
@@ -197,6 +208,7 @@ export default function Home() {
     function onMessageArrived(message) {
 
       console.log("onMessageArrived: " + message.payloadString);
+      setLog(message.payloadString)
       const lastMsg = message.payloadString;
 
       const [a, b, c, d, e, f, g, h, i, j, l, m, n, o, p, q] = lastMsg.split(',')
